@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void convertToBase(int n, int m) {
+    char result[64];
+    int index = 0;
+
+    do {
+        int remainder = n % m;
+        if (remainder < 10) {
+            result[index++] = remainder + '0'; 
+        } else {
+            result[index++] = remainder - 10 + 'a';
+        }
+        n /= m;
+    } while (n > 0);
+    for (int i = index - 1; i >= 0; i--) {
+        printf("%c", result[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int n, m;
+    printf("Введите число в десятичной системе: ");
+    scanf("%d", &n);
+    printf("Введите основание (2 ≤ m ≤ 20): ");
+    scanf("%d", &m);
+
+    if (m < 2 || m > 20) {
+        printf("Основание должно быть в диапазоне от 2 до 20.\n");
+        return 1;
+    }
+
+    printf("Число %d в системе счисления с основанием %d: ", n, m);
+    convertToBase(n, m);
+
+    return 0;
+}
