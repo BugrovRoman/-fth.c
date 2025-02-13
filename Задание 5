@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void replaceString(char* str, const char* oldStr, const char* newStr) {
+    char* pos;
+    int oldStrLen = strlen(oldStr);
+    int newStrLen = strlen(newStr);
+    int count = 0;
+
+    for (pos = str; (pos = strstr(pos, oldStr)) != NULL; pos += oldStrLen) {
+        count++;
+    }
+
+    if (count == 0) {
+        return;
+    }
+
+    char* result = (char*)malloc(strlen(str) + count * (newStrLen - oldStrLen) + 1);
+    char* current = result;
+
+    while (*str) {
+        pos = strstr(str, oldStr);
+        if (pos) {
+            int len = pos - str;
+            strncpy(current, str, len);
+            current += len;
+            strcpy(current, newStr);
+            current += newStrLen;
+            str = pos + oldStrLen;
+        } else {
+            strcpy(current, str);
+            break;
+        }
+    }
+    strcpy(str, result);
+    free(result);
+}
+
+int main() {
+    char str[1000], oldStr[100], newStr[100];
+
+    printf("Введите первую строку: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = 0;
+
+    printf("Введите строку для замены: ");
+    fgets(oldStr, sizeof(oldStr), stdin);
+    oldStr[strcspn(oldStr, "\n")] = 0;
+
+    printf("Введите новую строку: ");
+    fgets(newStr, sizeof(newStr), stdin);
+    newStr[strcspn(newStr, "\n")] = 0;
+
+    replaceString(str, oldStr, newStr);
+    printf("Результат: %s\n", str);
+
+    return 0;
+}
