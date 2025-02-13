@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    char text[1000];
+    int sum = 0;
+
+    printf("Введите текст: ");
+    fgets(text, sizeof(text), stdin);
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        if (text[i] >= '0' && text[i] <= '9') {
+            sum += text[i] - '0';
+        }
+    }
+
+    printf("Сумма цифр в тексте: %d\n", sum);
+
+    return 0;
