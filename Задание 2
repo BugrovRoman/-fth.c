@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <string.h>
+
+char* binaryAddition(const char* a, const char* b) {
+    int lenA = strlen(a);
+    int lenB = strlen(b);
+    int maxLen = (lenA > lenB) ? lenA : lenB;
+    char* result = (char*)malloc(maxLen + 2);
+    result[maxLen + 1] = '\0';
+
+    int carry = 0;
+    int i, sum;
+
+    for (i = 0; i < maxLen; i++) {
+        int bitA = (lenA - 1 - i >= 0) ? a[lenA - 1 - i] - '0' : 0;
+        int bitB = (lenB - 1 - i >= 0) ? b[lenB - 1 - i] - '0' : 0;
+
+        sum = bitA + bitB + carry;
+        result[maxLen - i] = (sum % 2) + '0';
+        carry = sum / 2;
+    }
+
+    if (carry) {
+        result[0] = '1'
+        return result;
+    } else {
+        return result + 1;
+    }
+}
+
+int main() {
+    char a[100], b[100];
+    printf("Введите первое бинарное число: ");
+    scanf("%s", a);
+    printf("Введите второе бинарное число: ");
+    scanf("%s", b);
+
+    char* sum = binaryAddition(a, b);
+    printf("Сумма: %s\n", sum);
+
+    free(sum - (sum[0] == '1' ? 0 : 1));
+
+    return 0;
+}
