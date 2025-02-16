@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+void toLowerCase(const char* src, char* dest) {
+    while (*src) {
+        *dest = tolower(*src);
+        src++;
+        dest++;
+    }
+    *dest = '\0';
+}
+
+char* removeWord(const char* str, const char* word) {
+    char lowerStr[100];
+    char lowerWord[100];
+    toLowerCase(str, lowerStr);
+    toLowerCase(word, lowerWord);
+
+    char* result = malloc(strlen(str) + 1);
+    char* current = result;
+    const char* temp = str;
+    size_t wordLen = strlen(lowerWord);
+
+    while (*temp) {
+        if (strncasecmp(temp, lowerWord, wordLen) == 0 && (temp[wordLen] == ' ' || temp[wordLen] == '\0')) {
+            temp += wordLen;
+            while (*temp == ' ') {
+                temp++;
+            }
+        } else {
+            *current++ = *temp++;
+        }
+    }
+
+    *current = '\0';
+
+    char* trimmedResult = malloc(strlen(result) + 1);
+    char* ptr = trimmedResult;
+    while (*result == ' ') {
+        result++;
+    }
+    while (*result) {
+        if (*result != ' ' || (ptr != trimmedResult && *(ptr - 1) != ' ')) {
+            *ptr++ = *result;
+        }
+        result++;
+    }
+
+    *ptr = '\0';
+
+    free(current);
+    return trimmedResult;
+}
+
+int main() {
+    char str[100];
+    char word[50];
+
+    printf("Введите строку: ");
+    fgets(str, sizeof(str), stdin);
+    str[strcspn(str, "\n")] = 0;
+
+    printf("Введите слово для поиска: ");
+    fgets(word, sizeof(word), stdin);
+    word[strcspn(word, "\n")] = 0;
+
+    char* result = removeWord(str, word);
+    
+    printf("Результат: '%s'\n", result);
+
+    free(result);
+    return 0;
+}
