@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pcre.h>
+
+int matchRegex(const char* pattern, const char* subject) {
+    pcre *re;
+    const char *error;
+    int erroffset;
+    int ovector[30];
+
+    re = pcre_compile(pattern, 0, &error, &erroffset, NULL);
+    if (re == NULL) {
+        printf("Ошибка компиляции регулярного выражения: %s\n", error);
+        return 0;
+    }
+
+    int rc = pcre_exec(re, NULL, subject, strlen(subject), 0, 0, ovector, 30);
+    pcre_free(re);
+
+    return rc >= 0;
+}
+
+int main() {
+    char pattern[100];
+    char subject[100];
+
+    printf("Введите регулярное выражение: ");
+    fgets(pattern, sizeof(pattern), stdin);
+    pattern[strcspn(pattern, "\n")] = 0;
+
+    printf("Введите строку для проверки: ");
+    fgets(subject, sizeof(subject), stdin);
+    subject[strcspn(subject, "\n")] = 0;
+
+    if (matchRegex(pattern, subject)) {
+        printf("Строка соответствует регулярному выражению.\n");
+    } else {
+        printf("Строка не соответствует регулярному выражению.\n");
+    }
+
+    return 0;
+}
