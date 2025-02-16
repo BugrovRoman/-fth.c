@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_STRINGS 100
+#define MAX_STRING_LENGTH 100
+
+void replaceDuplicates(char strings[MAX_STRINGS][MAX_STRING_LENGTH], int size) {
+    for (int i = 0; i < size; i++) {
+        if (strcmp(strings[i], "-") != 0) {
+            for (int j = i + 1; j < size; j++) {
+                if (strcmp(strings[i], strings[j]) == 0) {
+                    strcpy(strings[j], "-");
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    char strings[MAX_STRINGS][MAX_STRING_LENGTH];
+    int size;
+
+    printf("Введите количество строк: ");
+    scanf("%d", &size);
+    getchar();
+
+    printf("Введите строки:\n");
+    for (int i = 0; i < size; i++) {
+        fgets(strings[i], MAX_STRING_LENGTH, stdin);
+        strings[i][strcspn(strings[i], "\n")] = '\0';
+    }
+
+    replaceDuplicates(strings, size);
+
+    printf("Результат:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%s\n", strings[i]);
+    }
+
+    return 0;
+}
