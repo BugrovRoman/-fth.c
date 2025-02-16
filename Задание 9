@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_WORDS 100
+#define WORD_LENGTH 100
+
+int isOneCharDifferent(const char* word1, const char* word2) {
+    int diffCount = 0;
+    for (int i = 0; i < strlen(word1); i++) {
+        if (word1[i] != word2[i]) {
+            diffCount++;
+        }
+        if (diffCount > 1) {
+            return 0;
+        }
+    }
+    return diffCount == 1;
+}
+
+int findIntermediateWord(const char* startWord, const char* endWord, char words[][WORD_LENGTH], int size) {
+    for (int i = 0; i < size; i++) {
+        if (isOneCharDifferent(startWord, words[i]) && isOneCharDifferent(words[i], endWord)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int main() {
+    char startWord[WORD_LENGTH];
+    char endWord[WORD_LENGTH];
+    char words[MAX_WORDS][WORD_LENGTH];
+    int size;
+
+    printf("Введите начальное слово: ");
+    scanf("%s", startWord);
+    printf("Введите конечное слово: ");
+    scanf("%s", endWord);
+    
+    printf("Введите количество слов в массиве: ");
+    scanf("%d", &size);
+    
+    printf("Введите слова:\n");
+    for (int i = 0; i < size; i++) {
+        scanf("%s", words[i]);
+    }
+
+    int position = findIntermediateWord(startWord, endWord, words, size);
+    if (position != -1) {
+        printf("Промежуточное слово '%s' находится на позиции: %d\n", words[position], position);
+    } else {
+        printf("Промежуточное слово не найдено\n");
+    }
+
+    return 0;
+}
